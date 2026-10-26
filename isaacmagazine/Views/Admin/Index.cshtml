@@ -1,0 +1,104 @@
+﻿@{
+    ViewBag.Title = "Панель администратора";
+}
+
+<div class="container mt-4">
+
+    <!-- Шапка админки с кнопками -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <h1 class="m-0">Панель администратора</h1>
+        <div>
+            <a href="/Admin/GenresEdit" class="btn btn-success">+ Жанр</a>
+            <a href="/Admin/GamesEdit" class="btn btn-success">+ Игра</a>
+            <form action="/Account/Logout" method="post" class="d-inline">
+                <button type="submit" class="btn btn-outline-danger">Выйти</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Блок Жанров -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Жанры</h5>
+                </div>
+                <div class="card-body p-0">
+                    @if (ViewBag.Genres != null && ((IEnumerable<isaacmagazine.Domain.Entities.Genre>)ViewBag.Genres).Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var genre in ViewBag.Genres)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span class="fw-bold">@genre.Title</span>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="/Admin/GenresEdit/@genre.Id" class="btn btn-outline-primary">✎</a>
+                                        <form action="/Admin/GenresDelete" method="post" class="d-inline">
+                                            <input type="hidden" name="id" value="@genre.Id" />
+                                            <button type="submit" class="btn btn-outline-danger">✖</button>
+                                        </form>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="p-3 text-muted mb-0">Жанров пока нет.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Блок Игр -->
+        <div class="col-md-8 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Игры</h5>
+                </div>
+                <div class="card-body p-0">
+                    @if (ViewBag.Games != null && ((IEnumerable<isaacmagazine.Models.GameDto>)ViewBag.Games).Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Название</th>
+                                        <th>Жанр</th>
+                                        <th>Платформа</th>
+                                        <th>Цена</th>
+                                        <th class="text-end">Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var game in ViewBag.Games)
+                                    {
+                                        <tr>
+                                            <td class="fw-bold">@game.Title</td>
+                                            <td>@game.GenreName</td>
+                                            <td>@game.PlatformName</td>
+                                            <td>@game.Price ₽</td>
+                                            <td class="text-end">
+                                                <div class="btn-group btn-group-sm">
+                                                    <a href="/Admin/GamesEdit/@game.Id" class="btn btn-outline-primary">✎</a>
+                                                    <form action="/Admin/GamesDelete" method="post" class="d-inline">
+                                                        <input type="hidden" name="id" value="@game.Id" />
+                                                        <button type="submit" class="btn btn-outline-danger">✖</button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="p-3 text-muted mb-0">Игр пока нет.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

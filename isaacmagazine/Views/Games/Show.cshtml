@@ -1,0 +1,62 @@
+﻿@model isaacmagazine.Models.GameDto
+
+@{
+    ViewBag.Title = Model.Title;
+}
+
+<div class="container mt-4">
+    <!-- Хлебные крошки -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="/Games/Index">Каталог</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
+        </ol>
+    </nav>
+
+    <div class="row mt-3">
+        <!-- Левая колонка: Картинка -->
+        <div class="col-lg-6 mb-4">
+            @if (!string.IsNullOrEmpty(Model.Photo))
+            {
+                <img src="~/img/@Model.Photo" class="img-fluid rounded-4 shadow-lg" alt="@Model.Title">
+            }
+            else
+            {
+                <div class="bg-secondary text-white text-center py-5 rounded-4">Нет обложки</div>
+            }
+        </div>
+
+        <!-- Правая колонка: Информация -->
+        <div class="col-lg-6">
+            <h1 class="display-5 fw-bold mb-2">@Model.Title</h1>
+            
+            <div class="mb-4">
+                <span class="badge bg-primary fs-6 me-2 px-3 py-2">@Model.GenreName</span>
+                <span class="badge bg-dark fs-6 px-3 py-2">@Model.PlatformName</span>
+            </div>
+
+            <div class="p-4 bg-light rounded-4 shadow-sm mb-4">
+                <h3 class="text-success fw-bold mb-0">@Model.Price ₽</h3>
+                <small class="text-muted">Цифровой ключ</small>
+            </div>
+
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold border-bottom pb-2">Об игре</h5>
+                    <p class="card-text fs-6 text-secondary" style="white-space: pre-line;">
+                        @Html.Raw(Model.Description)
+                    </p>
+                </div>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                <form action="/Cart/Add" method="post">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <button type="submit" class="btn btn-success btn-lg px-5 fw-bold w-100">🛒 Купить сейчас</button>
+                </form>
+                <button class="btn btn-outline-secondary btn-lg px-4">В избранное ♡</button>
+            </div>
+        </div>
+    </div>
+</div>

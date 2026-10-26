@@ -1,0 +1,69 @@
+﻿@model List<isaacmagazine.Models.CartItem>
+
+@{
+    ViewBag.Title = "Мой профиль";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Левая колонка: Информация о пользователе -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <div class="display-1 text-primary mb-3">👤</div>
+                    <h3 class="fw-bold">@User.Identity.Name</h3>
+                    <p class="text-muted">Добро пожаловать в личный кабинет!</p>
+                    <hr />
+                    <div class="d-grid gap-2">
+                        <a href="/Games/Index" class="btn btn-outline-primary">Перейти в каталог</a>
+                        <a href="/Cart/Index" class="btn btn-outline-secondary">Моя корзина</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Правая колонка: Покупки -->
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">🎮 Мои игры</h4>
+                </div>
+                <div class="card-body">
+                    @if (TempData["Message"] != null)
+                    {
+                        <div class="alert alert-success fw-bold">@TempData["Message"]</div>
+                    }
+
+                    @if (Model.Count == 0)
+                    {
+                        <div class="text-center py-5">
+                            <h5 class="text-muted">У вас пока нет купленных игр 😢</h5>
+                            <a href="/Games/Index" class="btn btn-primary mt-3">Купить первую игру</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="list-group">
+                            @foreach (var item in Model)
+                            {
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        @if (!string.IsNullOrEmpty(item.Photo))
+                                        {
+                                            <img src="~/img/@item.Photo" style="width: 60px; height: 60px; object-fit: cover;" class="rounded me-3 shadow-sm" />
+                                        }
+                                        <div>
+                                            <h6 class="mb-1 fw-bold">@item.GameName</h6>
+                                            <small class="text-muted">Ключ активации готов</small>
+                                        </div>
+                                    </div>
+                                    <span class="badge bg-success px-3 py-2">Куплено</span>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

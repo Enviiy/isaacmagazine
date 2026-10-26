@@ -1,0 +1,25 @@
+﻿@model isaacmagazine.Domain.Entities.Genre
+
+@{
+    ViewBag.Title = Model.Id == 0 ? "Добавить жанр" : "Редактировать жанр";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">@ViewBag.Title</h2>
+
+    <div asp-validation-summary="All" class="text-danger fw-bold mb-3"></div>
+
+    <form action="/Admin/GenresEdit" method="post" class="card p-4 shadow-sm" style="max-width: 500px;">
+        <input type="hidden" name="Id" value="@Model.Id" />
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Название жанра</label>
+            <input type="text" name="Title" value="@Model.Title" class="form-control" placeholder="Например: Хоррор" required />
+        </div>
+
+        <div class="mt-2">
+            <button type="submit" class="btn btn-success px-4">Сохранить</button>
+            <a href="/Admin/Index" class="btn btn-outline-secondary ms-2">Отмена</a>
+        </div>
+    </form>
+</div>

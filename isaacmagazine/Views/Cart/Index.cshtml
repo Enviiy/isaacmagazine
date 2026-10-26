@@ -1,0 +1,92 @@
+﻿@model isaacmagazine.Models.Cart
+
+@{
+    ViewBag.Title = "Корзина";
+}
+
+<div class="container mt-4">
+    <h1 class="fw-bold mb-4">🛒 Ваша корзина</h1>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success fw-bold">@TempData["Message"]</div>
+    }
+
+    @if (Model.Items.Count == 0)
+    {
+        <div class="alert alert-info p-5 text-center">
+            <h4>Корзина пуста 😢</h4>
+            <a href="/Games/Index" class="btn btn-primary mt-3">Перейти в каталог</a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <!-- Левая колонка: Список игр -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-body p-0">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Игра</th>
+                                    <th>Цена</th>
+                                    <th>Кол-во</th>
+                                    <th>Сумма</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                @if (!string.IsNullOrEmpty(item.Photo))
+                                                {
+                                                    <img src="~/img/@item.Photo" style="width: 50px; height: 50px; object-fit: cover;" class="rounded me-3" />
+                                                }
+                                                <span class="fw-bold">@item.GameName</span>
+                                            </div>
+                                        </td>
+                                        <td>@item.Price ₽</td>
+                                        <td>@item.Quantity</td>
+                                        <td class="fw-bold">@(item.Price * item.Quantity) ₽</td>
+                                        <td class="text-end">
+                                            <form action="/Cart/Remove" method="post">
+                                                <input type="hidden" name="id" value="@item.GameId" />
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">✖</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Правая колонка: Итог -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm border-0 bg-light">
+                    <div class="card-body p-4">
+                        <h4 class="fw-bold mb-4">Итого</h4>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Товаров:</span>
+                            <span>@Model.Items.Sum(x => x.Quantity) шт.</span>
+                        </div>
+                        <hr />
+                        <div class="d-flex justify-content-between mb-4">
+                            <span class="fs-5 fw-bold">К оплате:</span>
+                            <span class="fs-4 fw-bold text-success">@Model.TotalPrice ₽</span>
+                        </div>
+                        
+                        <form action="/Cart/Checkout" method="post">
+                            <button type="submit" class="btn btn-success w-100 btn-lg fw-bold">Оформить заказ</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
